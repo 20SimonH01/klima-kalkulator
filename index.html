@@ -6,16 +6,16 @@
 <title>Klima-Kalkulator</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="importmap">
-    {
-      "imports": {
-        "react/jsx-runtime": "https://esm.sh/react@18/jsx-runtime",
-        "react/jsx-dev-runtime": "https://esm.sh/react@18/jsx-dev-runtime"
-      }
-    }
-  </script>
+<script type="importmap">
+{
+  "imports": {
+    "react/jsx-runtime": "https://esm.sh/react@18/jsx-runtime",
+    "react/jsx-dev-runtime": "https://esm.sh/react@18/jsx-dev-runtime"
+  }
+}
+</script>
 </head>
-<body style="margin:0;background:#070d16;">
+<body style="margin:0;background:#f5f5f7;">
 <div id="root"></div>
 <script type="text/babel" data-type="module" data-presets="react">
 import React, { useState, useEffect, useMemo, useCallback } from "https://esm.sh/react@18";
@@ -23,18 +23,18 @@ import ReactDOM from "https://esm.sh/react-dom@18/client";
 import { Snowflake, Lock, Zap, AlertTriangle, Wrench, Plus, Minus, Check, Package, Trash2, Info, Cable } from "https://esm.sh/lucide-react@0.383.0?deps=react@18";
 
 const C = {
-  void: '#070d16',
-  panel: '#0e1a29',
-  panelLocked: '#0a1119',
-  border: '#16273a',
-  cyan: '#2dd4e8',
-  cyanSoft: 'rgba(45,212,232,0.12)',
-  cyanDim: '#175159',
-  gold: '#f4b942',
-  hazard: '#fb7185',
-  profit: '#34d399',
-  ink: '#d7ecf2',
-  inkDim: '#5b7284',
+  void: '#f5f5f7',
+  panel: 'rgba(255,255,255,0.55)',
+  panelLocked: 'rgba(255,255,255,0.30)',
+  border: 'rgba(60,60,67,0.16)',
+  cyan: '#0a84ff',
+  cyanSoft: 'rgba(10,132,255,0.12)',
+  cyanDim: '#0040dd',
+  gold: '#ff9f0a',
+  hazard: '#ff453a',
+  profit: '#30d158',
+  ink: '#1d1d1f',
+  inkDim: '#6e6e73',
 };
 const MONO_DEVICES = {
   '9000': {
@@ -384,14 +384,16 @@ function Pipe({ active }) {
 }
 function NodeShell({ icon, title, subtitle, locked, children, accent }) {
   return (
-    <div className="rounded-2xl border p-4 sm:p-5" style={{
+    <div className="rounded-3xl border p-4 sm:p-5 backdrop-blur-xl transition" style={{
       backgroundColor: locked ? C.panelLocked : C.panel,
-      borderColor: locked ? C.border : (accent || C.cyan),
-      opacity: locked ? 0.7 : 1,
-      boxShadow: locked ? 'none' : `0 0 0 1px ${accent || C.cyan}22, 0 8px 24px -12px ${accent || C.cyan}55`,
+      borderColor: locked ? C.border : `${accent || C.cyan}40`,
+      opacity: locked ? 0.65 : 1,
+      boxShadow: locked
+        ? 'inset 0 1px 0 rgba(255,255,255,0.5)'
+        : `inset 0 1px 0 rgba(255,255,255,0.6), 0 10px 30px -14px ${accent || C.cyan}55, 0 1px 2px rgba(0,0,0,0.04)`,
     }}>
       <div className="flex items-center gap-3 mb-1">
-        <div className="flex items-center justify-center rounded-lg shrink-0" style={{
+        <div className="flex items-center justify-center rounded-full shrink-0" style={{
           width: 36, height: 36,
           backgroundColor: locked ? 'transparent' : C.cyanSoft,
           border: `1px solid ${locked ? C.border : (accent || C.cyan)}55`,
@@ -413,17 +415,17 @@ function Stepper({ value, onChange, step = 1, min = 0, suffix, decimals = 0 }) {
   return (
     <div className="flex items-center gap-2">
       <button type="button" onClick={() => set(value - step)}
-        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 active:scale-95 transition"
+        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition"
         style={{ backgroundColor: C.cyanSoft, color: C.cyan, border: `1px solid ${C.cyan}55` }} aria-label="verringern">
         <Minus size={14} />
       </button>
       <input type="number" inputMode="decimal" value={value}
         onChange={(e) => set(parseFloat(e.target.value) || 0)}
-        className="w-16 text-center rounded-lg py-1.5 font-mono text-sm bg-transparent"
+        className="w-16 text-center rounded-full py-1.5 font-mono text-sm bg-transparent"
         style={{ border: `1px solid ${C.border}`, color: C.ink }} />
       {suffix && <span className="text-xs font-body" style={{ color: C.inkDim }}>{suffix}</span>}
       <button type="button" onClick={() => set(value + step)}
-        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 active:scale-95 transition"
+        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 active:scale-95 transition"
         style={{ backgroundColor: C.cyanSoft, color: C.cyan, border: `1px solid ${C.cyan}55` }} aria-label="erhöhen">
         <Plus size={14} />
       </button>
@@ -435,9 +437,9 @@ function CapacityTabs({ capacities, value, onChange }) {
     <div className="flex flex-wrap gap-1.5">
       {capacities.map((cap) => (
         <button key={cap} type="button" onClick={() => onChange(cap)}
-          className="px-2.5 py-1.5 rounded-lg text-xs font-mono transition"
+          className="px-2.5 py-1.5 rounded-full text-xs font-mono transition"
           style={value === cap
-            ? { backgroundColor: C.cyan, color: '#03181c', fontWeight: 700 }
+            ? { backgroundColor: C.cyan, color: '#ffffff', fontWeight: 700 }
             : { backgroundColor: 'transparent', color: C.inkDim, border: `1px solid ${C.border}` }}>
           {cap}
         </button>
@@ -451,14 +453,14 @@ function VariantSelect({ table, capacity, value, onChange }) {
   return (
     <select value={value} onChange={(e) => onChange(e.target.value)}
       className="w-full rounded-lg px-3 py-2 text-sm font-body mt-2"
-      style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+      style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
       {entry.options.map((o) => (<option key={o.id} value={o.id}>{o.name} — {eur(o.price)}</option>))}
     </select>
   );
 }
 function LineItemRow({ index, onRemove, canRemove, children }) {
   return (
-    <div className="rounded-xl p-3" style={{ backgroundColor: '#0a1420', border: `1px solid ${C.border}` }}>
+    <div className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255,255,255,0.55)', border: `1px solid ${C.border}` }}>
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-mono" style={{ color: C.inkDim }}>#{index + 1}</span>
         {canRemove && (<button type="button" onClick={onRemove} style={{ color: C.hazard }} aria-label="entfernen"><Trash2 size={14} /></button>)}
@@ -509,7 +511,7 @@ function SimpleCategorySection({ category, items, onAdd, onRemove, onUpdate }) {
             <LineItemRow key={item.id} index={idx} onRemove={() => onRemove(item.id)} canRemove={items.length > 1}>
               <select value={item.typeId} onChange={(e) => onUpdate(item.id, { typeId: e.target.value })}
                 className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                 {category.types.map((t) => (<option key={t.id} value={t.id}>{t.label} — {eur(t.price)}/Stk</option>))}
               </select>
               <div className="flex items-center justify-between gap-2">
@@ -656,20 +658,25 @@ function KlimaKalkulator() {
   const geraeteVorhanden = monoUnits.length > 0 || multiSystems.length > 0;
 
   return (
-    <div className="min-h-screen w-full font-body" style={{ backgroundColor: C.void, color: C.ink }}>
+    <div className="min-h-screen w-full font-body relative overflow-x-hidden" style={{ background: 'linear-gradient(150deg,#eef4ff 0%,#f6f7fb 35%,#fdf1f8 70%,#eefcf6 100%)', color: C.ink }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap');
-        .font-display { font-family: 'Orbitron', sans-serif; }
-        .font-body { font-family: 'Rajdhani', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-display { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif; font-weight: 700; letter-spacing: -0.01em; }
+        .font-body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; }
+        .font-mono { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
-        @keyframes flowPulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
-        .pipe-active { background: linear-gradient(180deg, ${C.cyan}, ${C.cyanDim}); box-shadow: 0 0 10px ${C.cyan}88; animation: flowPulse 2.2s ease-in-out infinite; }
-        .pipe-locked { background: repeating-linear-gradient(180deg, ${C.inkDim} 0px, ${C.inkDim} 3px, transparent 3px, transparent 9px); opacity: 0.5; }
+        @keyframes flowPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+        .pipe-active { background: linear-gradient(180deg, ${C.cyan}, ${C.cyanDim}); box-shadow: 0 0 10px ${C.cyan}66; animation: flowPulse 2.2s ease-in-out infinite; }
+        .pipe-locked { background: repeating-linear-gradient(180deg, ${C.inkDim} 0px, ${C.inkDim} 3px, transparent 3px, transparent 9px); opacity: 0.3; }
         @media (prefers-reduced-motion: reduce) { .pipe-active { animation: none; } }
       `}</style>
-      <div className="sticky top-0 z-10 px-4 py-3 backdrop-blur" style={{ backgroundColor: `${C.void}ee`, borderBottom: `1px solid ${C.border}` }}>
+      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-24 -left-20 w-72 h-72 rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, rgba(10,132,255,0.30), transparent 70%)' }} />
+        <div className="absolute top-1/3 -right-24 w-80 h-80 rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, rgba(255,159,10,0.24), transparent 70%)' }} />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, rgba(255,69,58,0.16), transparent 70%)' }} />
+        <div className="absolute bottom-1/4 right-1/3 w-72 h-72 rounded-full blur-3xl" style={{ background: 'radial-gradient(circle, rgba(48,209,88,0.20), transparent 70%)' }} />
+      </div>
+      <div className="sticky top-0 z-10 px-4 py-3 backdrop-blur-xl" style={{ backgroundColor: 'rgba(255,255,255,0.65)', borderBottom: `1px solid ${C.border}`, boxShadow: '0 1px 0 rgba(255,255,255,0.6) inset' }}>
         <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
           <div className="flex items-center gap-2 min-w-0">
             <Snowflake size={18} style={{ color: C.cyan }} />
@@ -681,7 +688,7 @@ function KlimaKalkulator() {
           </div>
         </div>
       </div>
-      <div className="max-w-lg mx-auto px-4 py-5 space-y-0">
+      <div className="max-w-lg mx-auto px-4 py-5 space-y-0 relative z-10">
         <NodeShell icon={<Package size={16} />} title="Klimageräte" subtitle="Mono- und Multi-Split frei kombinierbar, beliebig viele Systeme">
           <div className="space-y-4">
             <div>
@@ -708,7 +715,7 @@ function KlimaKalkulator() {
               <div className="text-xs font-body mb-1.5" style={{ color: C.inkDim }}>Multi-Split Systeme ({multiSystems.length})</div>
               <div className="space-y-3">
                 {multiSystems.map((sys, sysIdx) => (
-                  <div key={sys.id} className="rounded-xl p-3" style={{ backgroundColor: '#0a1420', border: `1px solid ${C.cyan}44` }}>
+                  <div key={sys.id} className="rounded-xl p-3" style={{ backgroundColor: 'rgba(255,255,255,0.55)', border: `1px solid ${C.cyan}44` }}>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-mono" style={{ color: C.cyan }}>System {sysIdx + 1}</span>
                       <button type="button" onClick={() => removeMultiSystem(sys.id)} style={{ color: C.hazard }} aria-label="System entfernen"><Trash2 size={14} /></button>
@@ -717,9 +724,9 @@ function KlimaKalkulator() {
                     <div className="flex flex-wrap gap-1.5 mb-2">
                       {[2, 3, 4, 5].map((n) => (
                         <button key={n} type="button" onClick={() => setSystemOutdoorCount(sys.id, n)}
-                          className="px-3 py-1.5 rounded-lg text-xs font-mono"
+                          className="px-3 py-1.5 rounded-full text-xs font-mono"
                           style={sys.outdoorCount === n
-                            ? { backgroundColor: C.cyan, color: '#03181c', fontWeight: 700 }
+                            ? { backgroundColor: C.cyan, color: '#ffffff', fontWeight: 700 }
                             : { backgroundColor: 'transparent', color: C.inkDim, border: `1px solid ${C.border}` }}>
                           {n}er
                         </button>
@@ -727,13 +734,13 @@ function KlimaKalkulator() {
                     </div>
                     <select value={sys.outdoorVariant} onChange={(e) => updateMultiSystem(sys.id, { outdoorVariant: e.target.value })}
                       className="w-full rounded-lg px-3 py-2 text-sm font-body mb-3"
-                      style={{ backgroundColor: '#0d1826', color: C.ink, border: `1px solid ${C.border}` }}>
+                      style={{ backgroundColor: 'rgba(255,255,255,0.40)', color: C.ink, border: `1px solid ${C.border}` }}>
                       {MULTI_OUTDOOR[sys.outdoorCount].options.map((o) => (<option key={o.id} value={o.id}>{o.name} — {eur(o.price)}</option>))}
                     </select>
                     <div className="text-[11px] font-body mb-1.5" style={{ color: C.inkDim }}>Innengeräte ({sys.indoorUnits.length})</div>
                     <div className="space-y-2">
                       {sys.indoorUnits.map((u, idx) => (
-                        <div key={u.id} className="rounded-lg p-2.5" style={{ backgroundColor: '#0d1826', border: `1px solid ${C.border}` }}>
+                        <div key={u.id} className="rounded-lg p-2.5" style={{ backgroundColor: 'rgba(255,255,255,0.40)', border: `1px solid ${C.border}` }}>
                           <span className="text-[11px] font-mono" style={{ color: C.inkDim }}>Innengerät {idx + 1}</span>
                           <CapacityTabs capacities={MULTI_INDOOR_CAPACITIES} value={u.capacity}
                             onChange={(cap) => updateSystemIndoorUnit(sys.id, u.id, { capacity: cap, variantId: MULTI_INDOOR[cap].default })} />
@@ -781,7 +788,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeKabelkanal(item.id)} canRemove={kabelkanalItems.length > 1}>
                       <select value={item.sizeId} onChange={(e) => updateKabelkanal(item.id, { sizeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {KABELKANAL_SIZES.map((s) => (<option key={s.id} value={s.id}>{s.label} — {eur(s.price)}/Stk (2m)</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -812,7 +819,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeKanaldeckel(item.id)} canRemove={kanaldeckelItems.length > 1}>
                       <select value={item.sizeId} onChange={(e) => updateKanaldeckel(item.id, { sizeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {KANALDECKEL_SIZES.map((s) => (<option key={s.id} value={s.id}>{s.label} — {eur(s.price)}/Stk</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -825,7 +832,7 @@ function KlimaKalkulator() {
                 })}
               </div>
               <div className="mt-2"><AddButton onClick={addKanaldeckel} label="Weiterer Kanaldeckel" /></div>
-              <div className="rounded-lg px-3 py-2 text-[11px] font-body flex items-start gap-1.5 mt-2" style={{ backgroundColor: 'rgba(244,185,66,0.08)', color: C.gold }}>
+              <div className="rounded-lg px-3 py-2 text-[11px] font-body flex items-start gap-1.5 mt-2" style={{ backgroundColor: 'rgba(255,159,10,0.12)', color: C.gold }}>
                 <Info size={12} className="mt-0.5 shrink-0" />
                 Nur 60×40 und 110×60 haben einen bestätigten Hornbach-Preis.
               </div>
@@ -840,7 +847,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeKabel(item.id)} canRemove={kabelItems.length > 1}>
                       <select value={item.typeId} onChange={(e) => updateKabel(item.id, { typeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {KABEL_TYPES.map((t) => (<option key={t.id} value={t.id}>{t.label} — {eur(t.pricePerMeter)}/m</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -864,7 +871,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeKaelteleitung(item.id)} canRemove={kaelteleitungItems.length > 1}>
                       <select value={item.typeId} onChange={(e) => updateKaelteleitung(item.id, { typeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {KAELTELEITUNG_TYPES.map((t) => (<option key={t.id} value={t.id}>{t.label} — {eur(t.price / t.rollenlaenge)}/m</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -893,7 +900,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeHalter(item.id)} canRemove={halterItems.length > 1}>
                       <select value={item.typeId} onChange={(e) => updateHalter(item.id, { typeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {HALTER_TYPES.map((t) => (<option key={t.id} value={t.id}>{t.label} — {eur(t.price)}/Stk</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -917,7 +924,7 @@ function KlimaKalkulator() {
                     <LineItemRow key={item.id} index={idx} onRemove={() => removeKondensatschlauch(item.id)} canRemove={kondensatschlauchItems.length > 1}>
                       <select value={item.typeId} onChange={(e) => updateKondensatschlauch(item.id, { typeId: e.target.value })}
                         className="w-full rounded-lg px-3 py-2 text-sm font-body mb-2"
-                        style={{ backgroundColor: '#0a1420', color: C.ink, border: `1px solid ${C.border}` }}>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.55)', color: C.ink, border: `1px solid ${C.border}` }}>
                         {KONDENSATSCHLAUCH_TYPES.map((t) => (<option key={t.id} value={t.id}>{t.label} — {eur(t.price / t.rollenlaenge)}/m</option>))}
                       </select>
                       <div className="flex items-center justify-between gap-2">
@@ -995,7 +1002,7 @@ function KlimaKalkulator() {
               </span>
               <Stepper value={fertigungslohnMulti} onChange={setFertigungslohnMulti} step={10} decimals={0} suffix="€" />
             </div>
-            <div className="rounded-lg px-3 py-2 text-[11px] font-body flex items-start gap-1.5" style={{ backgroundColor: 'rgba(91,114,132,0.12)', color: C.inkDim }}>
+            <div className="rounded-lg px-3 py-2 text-[11px] font-body flex items-start gap-1.5" style={{ backgroundColor: 'rgba(110,110,115,0.12)', color: C.inkDim }}>
               <Info size={12} className="mt-0.5 shrink-0" />
               Jeweils eine Pauschale, unabhängig davon wie viele Geräte/Systeme es sind. Bei mehreren Multi-Split-Systemen selbst hochsetzen, falls das den Aufwand besser trifft.
             </div>
@@ -1013,7 +1020,7 @@ function KlimaKalkulator() {
             </div>
           </div>
         </NodeShell>
-        <div className="mt-5 rounded-2xl p-4" style={{ backgroundColor: C.panel, border: `1.5px solid ${C.gold}` }}>
+        <div className="mt-5 rounded-3xl p-4 backdrop-blur-xl" style={{ backgroundColor: C.panel, border: `1.5px solid ${C.gold}66`, boxShadow: `inset 0 1px 0 rgba(255,255,255,0.6), 0 12px 34px -16px ${C.gold}66` }}>
           <div className="font-display text-xs uppercase tracking-widest mb-3" style={{ color: C.gold }}>Angebot · Netto</div>
           <div className="space-y-1.5 text-sm font-mono">
             <div className="flex justify-between"><span className="font-body" style={{ color: C.inkDim }}>Gerät (EK {eur(geraetSumme)} + {geraeteAufschlag}%)</span><span>{eur(geraetMitAufschlag)}</span></div>
